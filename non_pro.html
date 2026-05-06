@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.rtl.min.css"
+      integrity="sha384-CfCrinSRH2IR6a4e6fy2q6ioOX7O6Mtm1L9vRvFZ1trBncWmMePhzvafv7oIcWiW"
+      crossorigin="anonymous"
+    />
+    <title>VideoSave</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">VideoSave</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                YouTube
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Youtube Video Download</a></li>
+                <li><a class="dropdown-item" href="#">Youtube Shorts Download</a></li>
+                <li><a class="dropdown-item" href="#">Youtube to mp3 Converter</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Instragram
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Insta Reel Download</a></li>
+                <li><a class="dropdown-item" href="#">Insta Post Download</a></li>
+                <li><a class="dropdown-item" href="#">Insta Story Download</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <h1>VideoSave</h1>
+      <h2>Download Everything, Anything!</h2>
+      <input type="text" id="url" placeholder="Paste YouTube URL" />
+      <button onclick="getVideo()">Get Video</button>
+      <div id="result"></div>
+    </div>
+    <script>
+      async function getVideo() {
+        const url = document.getElementById("url").value;
+
+        const res = await fetch("/video-info", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ url }),
+        });
+
+        const data = await res.json();
+
+        const result = document.getElementById("result");
+        result.innerHTML = "";
+
+        if (data.error) {
+          result.innerHTML = `<p>${data.error}</p>`;
+          return;
+        }
+
+        result.innerHTML = `
+            <h3>${data.title}</h3>
+            <img src="${data.thumbnail}" width="300"><br><br>
+            `;
+
+        data.formats.forEach((f) => {
+          const a = document.createElement("a");
+          a.href = f.url;
+          a.innerText = `document ${f.quality}`;
+          a.target = "_blank";
+          a.style.display = "block";
+          result.appendChild(a);
+        });
+      }
+    </script>
+  </body>
+</html>
