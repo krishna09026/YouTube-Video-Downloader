@@ -1,0 +1,32 @@
+ 
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+form div {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+button {
+    background-color: #4a90e2;
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: rgb(231, 36, 36);
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+}
